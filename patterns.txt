@@ -1,8 +1,11 @@
-•Singleton Pattern
+• Singleton Pattern
+
 Singletons - classes which can be instantiated once, and can be accessed globally
-A Singleton should only be able to get instantiated once. 
-One way to make sure that only one instance can be created,
-is by creating a variable called instance.
+ A Singleton should only be able to get instantiated once. 
+  One way to make sure that only one instance can be created,
+   is by creating a variable called instance.
+    Let’s make sure that only one instance of the Counter class can be created.
+
 
 let instance;
 let counter = 0;
@@ -14,12 +17,142 @@ class Counter {
     }
     instance = this;
   }
+
 we only have to set up memory for that one instance, 
-which is referenced throughout the application. 
-Singletons are actually considered an anti-pattern //not so used 
+ which is referenced throughout the application. 
+  Singletons are actually considered an anti-pattern //not so used 
+
+ The Object.freeze method makes sure that consuming code cannot modify the Singleton
 
 A Singleton instance should be able to get
-referenced throughout the entire app.
+ referenced throughout the entire app.
 
 •Prototype Pattern
+
+Share properties among many objects of the same type
+
+-> an object that's native to JavaScript, and can be accessed
+     by objects through the prototype chain
+-> bark property - all properties that are defined on the class 
+ itself, bark in this case, are automatically 
+  added to the prototype.
+   The value of __proto__ on any instance of the constructor, 
+    is a direct reference to the 
+     constructor's prototype
+
+class Dog {
+  constructor(name) {
+    this.name = name;
+  }
+
+  bark() {
+    console.log("Woof!");
+  }
+}
+
+class SuperDog extends Dog {
+  constructor(name) {
+    super(name);
+  }
+
+  fly() {
+    console.log(`Flying!`);
+  }
+}
+
+const dog1 = new SuperDog("Daisy");
+dog1.bark();
+dog1.fly();
+
+We have access to the bark method, 
+ as we extended the Dog class.
+  The value of __proto__ on the prototype of S
+   uperDog points to the Dog.prototype object!
+
+The Object.create method lets us create a new object, 
+ to which we can explicitly pass the value of its prototype
+
+const dog = {
+  bark() {
+    return `Woof!`;
+  }
+};
+
+const pet1 = Object.create(dog);
+
 •Module Pattern
+
+Split up your code into smaller, reusable pieces
+
+modules allow you to keep certain values within your file private.
+ in order to make the functions from math.js 
+  available to other files, 
+   we first have to export them.
+    In order to export code from a module, we can use the export keyword.
+
+
+export function add(x, y) {
+  return x + y;
+}
+
+We have to import the values on top of the index.js file, 
+ by using the import keyword.
+  To let javascript know from which module we want to 
+   import these functions,
+    we need to add a from value and 
+     the relative path to the module.
+
+  import { add, multiply, subtract, square } from "./math.js";
+
+- can export a default value, by adding export default
+
+export default function add(x, y) {
+  return x + y;
+}
+
+-> import add, { multiply, subtract, square } from "./math.js";
+
+-> Instead of importing the add function using the name add, we can call it addValues, for example.
+
+import addValues, { multiply, subtract, square } from "./math.js";
+
+addValues(7, 8);
+multiply(8, 9);
+subtract(10, 3);
+square(3);
+
+import all exports from a module, 
+   meaning all named exports and the default export,
+   by using an asterisk * and giving the name we want to
+    import the module as. 
+
+import * as math from "./math.js";
+
+math.default(7, 8);
+math.multiply(8, 9);
+
+When importing all modules on the top of a file, all modules 
+ get loaded before the rest of the file. 
+  In some cases, we only need to import a module based on a certain
+   condition. With a dynamic import, we can import
+    modules on demand.
+
+import("module").then(module => {
+  module.default();
+  module.namedExport();
+});
+
+// Or with async/await
+(async () => {
+  const module = await import("module");
+  module.default();
+  module.namedExport();
+})();
+
+Each image gets loaded after the user clicks on the 
+ Click to load image button. 
+  The images are local .png files, 
+   which get loaded based on 
+    the value of num that we pass to the string.
+
+const res = await import(`../assets/dog${num}.png`);
