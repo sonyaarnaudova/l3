@@ -1,0 +1,25 @@
+•Singleton Pattern
+Singletons - classes which can be instantiated once, and can be accessed globally
+A Singleton should only be able to get instantiated once. 
+One way to make sure that only one instance can be created,
+is by creating a variable called instance.
+
+let instance;
+let counter = 0;
+
+class Counter {
+  constructor() {
+    if (instance) {
+      throw new Error("You can only create one instance!");
+    }
+    instance = this;
+  }
+we only have to set up memory for that one instance, 
+which is referenced throughout the application. 
+Singletons are actually considered an anti-pattern //not so used 
+
+A Singleton instance should be able to get
+referenced throughout the entire app.
+
+•Prototype Pattern
+•Module Pattern
